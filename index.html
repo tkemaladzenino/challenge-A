@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge</title>
+
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: rgb(247, 247, 162);
+        }
+
+        #chessboard {
+            position: relative;
+        }
+
+        #piece {
+            position: absolute;
+            cursor: grab;
+            z-index: 5;
+
+        }
+
+        #pawn {
+            position: absolute;
+            cursor: grab;
+            z-index: 5;
+            display: none;
+        }
+
+        #piece.shining {
+            animation: shining 1s infinite alternate;
+        }
+
+        @keyframes shining {
+            0% {
+                filter: brightness(400%);
+            }
+
+            100% {
+                filter: brightness(200%);
+            }
+        }
+
+        #piece.enlarged {
+            transform: scale(1.7);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="piece">
+        <img src="./piece.webp" style="width: 100px; height: 200px;">
+    </div>
+    <div id="pawn">
+        <img src="./pawn.png" style="width: 100px; height: 150px;">
+    </div>
+    <div id="chessboard" style="display: flex; justify-content: center; align-items: center;">
+        <div class="p-div" style="position: absolute;z-index: 1;color: white; font-size: 30px; font-weight: 500;">
+            <p>CHAPTER-1</p>
+        </div>
+        <img src="./chessboard.png" id="chessboard" style=" width: 900px; height: 500px;">
+    </div>
+
+</body>
+
+<script type="text/javascript">
+
+    function movePieceWithMouse(event) {
+        const piece = document.getElementById('piece');
+        const chessboard = document.getElementById('chessboard');
+        const pawn = document.getElementById('pawn');
+
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+
+        piece.style.left = mouseX - piece.offsetWidth / 2 + 'px';
+        piece.style.top = mouseY - piece.offsetHeight / 2 + 'px';
+
+        pawn.style.left = mouseX - pawn.offsetWidth / 2 + 'px';
+        pawn.style.top = mouseY - pawn.offsetHeight / 2 + 'px';
+
+        const chessboardRect = chessboard.getBoundingClientRect();
+        const isOnChessboard = mouseX >= chessboardRect.left && mouseX <= chessboardRect.right &&
+            mouseY >= chessboardRect.top && mouseY <= chessboardRect.bottom;
+
+        if (isOnChessboard) {
+            piece.classList.add('shining', 'enlarged');
+            piece.style.display = "flex";
+            pawn.style.display = "none";
+
+        } else {
+            piece.classList.remove('shining', 'enlarged');
+            pawn.style.display = "flex";
+            piece.style.display = "none";
+        }
+    }
+
+    document.addEventListener('mousemove', movePieceWithMouse);
+
+</script>
+
+</html>
